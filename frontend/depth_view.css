@@ -1,0 +1,100 @@
+/* Inherit variables from style.css */
+:root {
+    --bg-dark: #2c2c4a;
+    --bg-medium: #22223b;
+    --bg-light: #0f3460;
+    --text-light: #e0e0e0;
+    --accent-primary: #1492d1;
+    --border-color: rgba(255, 255, 255, 0.1);
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    overflow: hidden; /* Prevent body scroll */
+}
+
+.depth-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: var(--bg-light);
+    border-bottom: 1px solid var(--border-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px; /* Fixed height */
+    z-index: 1000;
+}
+
+.depth-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.depth-issue-name {
+    font-size: 1rem;
+    font-style: italic;
+    opacity: 0.8;
+}
+
+.depth-grid-container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 60px); /* Full height minus header */
+    margin-top: 60px; /* Offset for fixed header */
+}
+
+.grid-header-container {
+    overflow-x: hidden; /* Hide horizontal scrollbar for header */
+    overflow-y: scroll; /* Allow vertical scroll for header if needed, but usually not */
+    flex-shrink: 0; /* Prevent header from shrinking */
+}
+
+.grid-body-container {
+    flex-grow: 1;
+    overflow: auto; /* Enable both horizontal and vertical scrolling */
+    position: relative; /* For virtualized rows */
+}
+
+/* Re-using live-log-table styles from main stylesheet */
+.live-log-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* Fixed layout for both tables */
+}
+
+.live-log-table th,
+.live-log-table td {
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.live-log-table th {
+    background-color: var(--bg-medium);
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
+
+.live-log-table tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+.live-log-table tr:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+#depthViewVirtualContainer {
+    position: relative;
+    width: 100%;
+}

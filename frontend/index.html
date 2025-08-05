@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power and Battery Sentinal Agent</title>
+    <link rel="icon" href="/static/logo/logo.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="main-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="/static/logo/logo.png" alt="SilverLog Logo" class="logo-wide">
+            </div>
+            <div class="sidebar-reports">
+                <h2>Reports</h2>
+                <ul id="reports-list">
+                    <!-- Report items will be dynamically added here -->
+                </ul>
+            </div>
+            <button id="sidebar-toggle" class="sidebar-toggle">☰</button>
+        </aside>
+
+        <div class="chat-area">
+            <div class="chat-header">
+                <h2><img src="/static/logo/logo.svg" alt="P&B Sentinel Agent Logo" class="header-logo"> P&B Sentinal Agent</h2>
+                <div class="subtitle">Advanced PowerLog Analysis Suite</div>
+            </div>
+            <div class="chat-box" id="chat-box">
+                <!-- Initial bot message will be added by JS -->
+            </div>
+
+            <div class="chat-input-container">
+                <label for="file-input" class="attach-icon">📎</label>
+                <input type="file" id="file-input"  hidden>
+                <input type="file" id="message-file-input" hidden>
+                <input type="text" id="user-input" placeholder="Ask anything or upload your PowerLog file...">
+                <button id="send-btn" class="send-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="24px" height="24px"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="/static/script.js"></script>
+    <script type="module" src="/static/liveLogDisplay.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- PowerLog Summary Modal -->
+    <div id="summaryModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <div class="modal-header">
+                <h1>
+                    <div class="logo">PL</div>
+                    PowerLog Data Analysis
+                </h1>
+                <p>Detailed breakdown of system power states and battery consumption</p>
+                <button class="depth-view-btn" id="depthViewBtn">Depth View</button>
+            </div>
+
+            <div class="stats-bar">
+                <div class="stat-card">
+                    <div class="stat-value" id="modalTotalSessions">0</div>
+                    <div class="stat-label">Total Sessions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="modalTotalRuntime">0</div>
+                    <div class="stat-label">Total Runtime</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="modalBatteryUsage">0%</div>
+                    <div class="stat-label">Battery Usage</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="modalPowerEvents">0</div>
+                    <div class="stat-label">Power Events</div>
+                </div>
+            </div>
+
+            <div class="search-bar">
+                <input type="text" class="search-input" placeholder="Search by Chunk ID, Date, or Status..." id="modalSearchInput">
+                <button class="filter-btn" id="modalFilterBattery">Battery Only</button>
+                <button class="filter-btn" id="modalFilterPower">Power Events</button>
+                <button class="filter-btn" id="modalClearFilters">Clear Filters</button>
+                <button class="export-btn" id="modalExportData">📊 Export CSV</button>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <h2>PowerLog Session Details</h2>
+                    <p>Detailed breakdown of system power states and battery consumption</p>
+                </div>
+                
+                <div class="table-wrapper">
+                    <table class="data-table" id="modalDataTable">
+                        <thead>
+                            <tr>
+                                <th>Start Date</th>
+                                <th>Start Time</th>
+                                <th>End Date</th>
+                                <th>End Time</th>
+                                <th>Duration</th>
+                                <th>Battery</th>
+                                <th>Power Source</th>
+                                <th>Avg. Perc / SOH</th>
+                                <th>Message Logs</th>
+                            </tr>
+                        </thead>
+                        <tbody id="modalTableBody">
+                            <!-- Data will be loaded here by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <!-- Battery Flow Chart Modal -->
+    <div id="batteryFlowModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeBatteryFlowModal">&times;</span>
+            <div class="modal-header">
+                <h1>Battery Flow Analysis</h1>
+                <p id="batteryHealthStatus"></p>
+            </div>
+            <div class="chart-container">
+                <canvas id="batteryFlowChartCanvas"></canvas>
+                <div id="no-chart-message" class="no-chart-message" style="display: none;">No chart data available for this chunk.</div>
+            </div>
+            <div class="chart-stats">
+                <div class="stat-item">
+                    <span class="stat-icon">⚡</span>
+                    <span class="stat-label">Voltage</span>
+                    <span class="stat-value" id="volt-stats">N/A</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon">🔋</span>
+                    <span class="stat-label">Current</span>
+                    <span class="stat-value" id="curr-stats">N/A</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon">🌡️</span>
+                    <span class="stat-label">Temperature</span>
+                    <span class="stat-value" id="temp-stats">N/A</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Message Logs Modal -->
+    <div id="messageLogsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeMessageLogsModal">&times;</span>
+            <div class="modal-header">
+                <h1>Message Logs</h1>
+                <p id="messageLogsHeader"></p>
+            </div>
+            <div class="log-container">
+                <pre id="messageLogsContent"></pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Power Log Modal -->
+    <div id="liveLogModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeLiveLogModal">&times;</span>
+            <div class="modal-header">
+                <h1>Live PowerLog Stream</h1>
+                <p id="liveLogHeader"></p>
+            </div>
+            <div class="log-container" id="liveLogContainer">
+                <!-- Live log entries will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <div class="watermark">akhilpadmanaban</div>
+</body>
+</html>

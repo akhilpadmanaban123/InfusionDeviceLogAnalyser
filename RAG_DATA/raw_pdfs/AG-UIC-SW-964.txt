@@ -1,0 +1,1 @@
+This file ahs the raw pdf data of requirements that are read through docling and stored in other directory

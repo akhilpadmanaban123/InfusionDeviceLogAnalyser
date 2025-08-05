@@ -1,0 +1,25 @@
+bit_defs = {
+    15: {"name": "OCA", "description": "Overcharged Alarm"},
+    14: {"name": "TCA", "description": "Terminate Charge Alarm"},
+    13: {"name": "RSVD", "description": "Undefined"},
+    12: {"name": "OTA", "description": "Overtemperature Alarm"},
+    11: {"name": "TDA", "description": "Terminate Discharge Alarm"},
+    10: {"name": "RSVD", "description": "Undefined"},
+    9:  {"name": "RCA", "description": "Remaining Capacity Alarm"},
+    8:  {"name": "RTA", "description": "Remaining Time Alarm"},
+    7:  {"name": "INIT", "description": "Initialization"},
+    6:  {"name": "DSG", "description": "Discharging or Relax"},
+    5:  {"name": "FC", "description": "Fully Charged"},
+    4:  {"name": "FD", "description": "Fully Discharged"},
+    "error_code": {
+        0x0: "OK",
+        0x1: "Busy",
+        0x2: "Reserved Command",
+        0x3: "Unsupported Command",
+        0x4: "Access Denied",
+        0x5: "Overflow/Underflow",
+        0x6: "Bad Size",
+        0x7: "Unknown Error",
+        0x8: "Incomplete"
+    }
+}

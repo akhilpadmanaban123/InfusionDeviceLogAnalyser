@@ -1,0 +1,14 @@
+ give an idea about how the chunk should be:
+
+So chunk#1 should have : 
+    - ChunkID   : #CreateUniqueChunkID
+    - StartDate : 06/17/2025
+    - StartTime : 08:49:11
+    - StartStates:
+        - BattPres : No Battery
+        - PowerSrc : AC
+        - Perc : [0,0,0,.....]  # here the percentage list is updated from each timeline starting from 08:49:11 until the chunk ends
+        - Similarly all these can be added here as a list until the chunk ends 
+    - EndDate: 06/17/2025
+    - EndTime: 09:38:23
+    - TotalTime : #calculate and add the timeframe in the form of DD:HH:MM:SS
